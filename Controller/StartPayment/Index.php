@@ -43,6 +43,7 @@ class Index extends Action {
 		}
 
 		$response = $this->gateway->purchase($this->checkoutSession->getLastRealOrder());
+
 		return $response->redirect();
 	}
 }
