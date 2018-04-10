@@ -10,8 +10,11 @@ use Omnipay\Omnipay;
 
 class Gateway {
 
-	/** @var Omnipay */
+	/** @var \Omnipay\Nocks\Gateway */
 	private $gateway;
+
+	/** @var String */
+	private $merchant;
 
 	/** @var UrlInterface */
 	private $urlBuilder;
@@ -21,10 +24,9 @@ class Gateway {
 		UrlInterface $urlBuilder
 	) {
 		$accessToken = $scopeConfig->getValue('payment/nocks_gateway/access_token');
-		$merchant = $scopeConfig->getValue('payment/nocks_gateway/merchant');
+		$this->merchant = $scopeConfig->getValue('payment/nocks_gateway/merchant');
 
 		$gateway = Omnipay::create('Nocks');
-		$gateway->setMerchant($merchant);
 		$gateway->setAccessToken($accessToken);
 
 		$this->gateway = $gateway;
@@ -33,23 +35,24 @@ class Gateway {
 
 	public function purchase(Order $order) {
 		$options = [
+			'merchant' => $this->merchant,
 			'amount' => $order->getGrandTotal(),
 			'currency' => 'EUR',
 			'sourceCurrency' => 'NLG',
 			'returnUrl' => $this->urlBuilder->getRouteUrl('nocks/redirect', ['order_id' => $order->getId()]),
-			'callbackUrl' => $this->urlBuilder->getRouteUrl('nocks/callback'),
+			'notifyUrl' => $this->urlBuilder->getRouteUrl('nocks/callback'),
 			'metadata' => ['order_id' => $order->getId()],
 		];
 
 		$response = $this->gateway->purchase($options)->send();
 
 		// Save the Nocks transaction id in the order
-		$order->setNocksTransactionId($response->getTransactionReference())->save();
+		$order->setNocksTransactionId($response->getTransactionId())->save();
 
 		return $response;
 	}
 
 	public function completePurchase($transactionId) {
-		return $this->gateway->completePurchase(['transactionReference' => $transactionId])->send();
+		return $this->gateway->completePurchase(['transactionId' => $transactionId])->send();
 	}
 }
