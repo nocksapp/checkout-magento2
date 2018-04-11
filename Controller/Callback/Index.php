@@ -81,8 +81,8 @@ class Index extends Action {
 					if ($response->isSuccessful()) {
 						if($order->canInvoice()) {
 							$invoice = $this->invoiceService->prepareInvoice($order);
-
 							$invoice->register();
+							$invoice->pay();
 							$invoice->save();
 
 							$transactionSave = $this->transaction
