@@ -16,7 +16,7 @@
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                 </field>
                 <field id="merchant" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Nocks merchant uuid</label>
+                    <label>Merchant</label>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <source_model>Magento\NocksPaymentGateway\Model\Config\Source\Merchants</source_model>
                 </field>

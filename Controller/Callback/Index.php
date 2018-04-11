@@ -8,6 +8,9 @@ use Magento\Framework\App\Action\Context;
 use Magento\NocksPaymentGateway\Gateway;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Service\InvoiceService;
+use Magento\Framework\DB\Transaction;
+use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Framework\Controller\Result\JsonFactory;
 
 
@@ -22,6 +25,15 @@ class Index extends Action {
 	/** @var JsonFactory */
 	private $jsonFactory;
 
+	/** @var InvoiceService */
+	private $invoiceService;
+
+	/** @var InvoiceSender */
+	private $invoiceSender;
+
+	/** @var Transaction */
+	private $transaction;
+
 	/**
 	 * @param Context $context
 	 * @param Gateway $gateway
@@ -32,11 +44,17 @@ class Index extends Action {
 		Context $context,
 		Gateway $gateway,
 		OrderRepositoryInterface $orderRepository,
+		InvoiceService $invoiceService,
+		InvoiceSender $invoiceSender,
+		Transaction $transaction,
 		JsonFactory $jsonFactory
 	) {
 		parent::__construct($context);
 		$this->gateway = $gateway;
 		$this->orderRepository = $orderRepository;
+		$this->invoiceService = $invoiceService;
+		$this->invoiceSender = $invoiceSender;
+		$this->transaction = $transaction;
 		$this->jsonFactory = $jsonFactory;
 	}
 
@@ -61,8 +79,27 @@ class Index extends Action {
 				if ($order) {
 					// Change order state
 					if ($response->isSuccessful()) {
-						$order->setState(Order::STATE_COMPLETE)
-							->setStatus(Order::STATE_COMPLETE)
+						if($order->canInvoice()) {
+							$invoice = $this->invoiceService->prepareInvoice($order);
+
+							$invoice->register();
+							$invoice->save();
+
+							$transactionSave = $this->transaction
+								->addObject($invoice)
+								->addObject($invoice->getOrder());
+							$transactionSave->save();
+
+							if (!$invoice->getEmailSent()) {
+								$this->invoiceSender->send($invoice);
+								$order->addStatusHistoryComment('Payment Completed.', $invoice->getId())
+								      ->setIsCustomerNotified(true)
+								      ->save();
+							}
+						}
+
+						$order->setState(Order::STATE_PROCESSING)
+							->setStatus(Order::STATE_PROCESSING)
 							->save();
 					} else if ($response->isCancelled()) {
 						$order->setState(Order::STATE_CANCELED)
