@@ -37,7 +37,7 @@ class Gateway {
 		$options = [
 			'merchant' => $this->merchant,
 			'amount' => $order->getGrandTotal(),
-			'currency' => 'EUR',
+			'currency' => $order->getOrderCurrencyCode(),
 			'sourceCurrency' => 'NLG',
 			'returnUrl' => $this->urlBuilder->getRouteUrl('nocks/redirect', ['order_id' => $order->getId()]),
 			'notifyUrl' => $this->urlBuilder->getRouteUrl('nocks/callback'),
