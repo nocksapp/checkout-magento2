@@ -64,7 +64,7 @@ class Index extends Action {
 	 * @return \Magento\Framework\Controller\ResultInterface
 	 */
 	public function execute() {
-		$transactionId = $entityBody = file_get_contents('php://input');
+		$transactionId = file_get_contents('php://input');
 		$result = $this->jsonFactory->create();
 
 		if ($transactionId) {
