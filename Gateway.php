@@ -24,10 +24,12 @@ class Gateway {
 		UrlInterface $urlBuilder
 	) {
 		$accessToken = $scopeConfig->getValue('payment/nocks_gateway/access_token');
+		$testmode = $scopeConfig->getValue('payment/nocks_gateway/testmode');
 		$this->merchant = $scopeConfig->getValue('payment/nocks_gateway/merchant');
 
 		$gateway = Omnipay::create('Nocks');
 		$gateway->setAccessToken($accessToken);
+		$gateway->setTestMode($testmode === '1' ? true : false);
 
 		$this->gateway = $gateway;
 		$this->urlBuilder = $urlBuilder;
