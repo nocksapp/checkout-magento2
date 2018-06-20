@@ -35,9 +35,6 @@ require([
                     $.ajax({
                         method: 'POST',
                         url: url,
-                        success: function (result) {
-                            valid = result.valid;
-                        },
                         data: {
                             accessToken: accessToken,
                             testMode: testmode,
