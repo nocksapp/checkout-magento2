@@ -2,7 +2,7 @@
   "name": "nocksapp/magento2",
   "type": "library",
   "description": "Nocks Payment Module for Magento 2",
-  "version": "1.2.0",
+  "version": "1.1.0",
   "require": {
     "php": "~5.6.5|7.0.2|7.0.4|~7.0.6|~7.1.0",
     "nocksapp/omnipay-nocks": "^1.2.0",
