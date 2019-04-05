@@ -23,28 +23,20 @@ class Gateway {
 		ScopeConfigInterface $scopeConfig,
 		UrlInterface $urlBuilder
 	) {
-		$accessToken = $scopeConfig->getValue('payment/nocks_gateway/access_token');
-		$testmode = $scopeConfig->getValue('payment/nocks_gateway/testmode');
 		$this->merchant = $scopeConfig->getValue('payment/nocks_gateway/merchant');
-
-		$gateway = Omnipay::create('Nocks');
-		$gateway->setAccessToken($accessToken);
-		$gateway->setTestMode($testmode === '1' ? true : false);
-
-		$this->gateway = $gateway;
+		$this->gateway = Util::makeOmnipayGateway($scopeConfig);
 		$this->urlBuilder = $urlBuilder;
 	}
 
-	public function purchase(Order $order) {
-		$options = [
+	public function purchase(Order $order, $data) {
+		$options = array_merge([
 			'merchant' => $this->merchant,
 			'amount' => $order->getGrandTotal(),
 			'currency' => $order->getOrderCurrencyCode(),
-			'sourceCurrency' => 'NLG',
 			'returnUrl' => $this->urlBuilder->getRouteUrl('nocks/redirect', ['order_id' => $order->getId()]),
 			'notifyUrl' => $this->urlBuilder->getRouteUrl('nocks/callback'),
 			'metadata' => ['order_id' => $order->getId()],
-		];
+		], $data);
 
 		$response = $this->gateway->purchase($options)->send();
 

@@ -10,7 +10,28 @@ define(
         'use strict';
         rendererList.push(
             {
-                type: 'nocks_gateway',
+                type: 'nocks_gulden',
+                component: 'Magento_NocksPaymentGateway/js/view/payment/method-renderer/nocks_gateway'
+            }
+        );
+
+        rendererList.push(
+            {
+                type: 'nocks_ideal',
+                component: 'Magento_NocksPaymentGateway/js/view/payment/method-renderer/nocks_gateway'
+            }
+        );
+
+        rendererList.push(
+            {
+                type: 'nocks_sepa',
+                component: 'Magento_NocksPaymentGateway/js/view/payment/method-renderer/nocks_gateway'
+            }
+        );
+
+        rendererList.push(
+            {
+                type: 'nocks_balance',
                 component: 'Magento_NocksPaymentGateway/js/view/payment/method-renderer/nocks_gateway'
             }
         );
