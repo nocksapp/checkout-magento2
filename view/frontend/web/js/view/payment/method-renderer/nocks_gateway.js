@@ -8,17 +8,34 @@ define(
 
         return Component.extend({
             defaults: {
-                template: 'Magento_NocksPaymentGateway/payment/form'
+                template: 'Magento_NocksPaymentGateway/payment/form',
+                selectedIssuer: ''
             },
+
+            initObservable: function () {
+                this._super().observe('selectedIssuer');
+
+                return this;
+            },
+
             redirectAfterPlaceOrder: false,
-
-            getCode: function() {
-                return 'nocks_gateway';
+            
+            getIssuers: function () {
+                return window.checkoutConfig.payment.issuers;
             },
-
+            
             getData: function() {
+                if (this.item.method === 'nocks_ideal') {
+                    return {
+                        'method': this.item.method,
+                        'additional_data': {
+                            'issuer': this.selectedIssuer(),
+                        }
+                    }
+                }
+
                 return {
-                    'method': this.item.method
+                    'method': this.item.method,
                 };
             },
 

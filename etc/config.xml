@@ -3,13 +3,16 @@
     <default>
         <payment>
             <nocks_gateway>
-                <active>1</active>
                 <testmode>0</testmode>
-                <model>NocksPaymentGatewayFacade</model>
+                <model>Magento\NocksPaymentGateway\Model\Methods\Gateway</model>
                 <access_token/>
                 <merchant/>
-                <order_status>new</order_status>
+            </nocks_gateway>
+            <nocks_gulden>
+                <active>0</active>
+                <model>Magento\NocksPaymentGateway\Model\Methods\Gulden</model>
                 <title>Gulden</title>
+                <order_status>pending_payment</order_status>
                 <currency>EUR</currency>
                 <can_authorize>0</can_authorize>
                 <can_capture>0</can_capture>
@@ -19,7 +22,52 @@
                 <can_use_checkout>1</can_use_checkout>
                 <is_gateway>1</is_gateway>
                 <sort_order>1</sort_order>
-            </nocks_gateway>
+            </nocks_gulden>
+            <nocks_ideal>
+                <active>0</active>
+                <model>Magento\NocksPaymentGateway\Model\Methods\Ideal</model>
+                <title>iDEAL</title>
+                <order_status>pending_payment</order_status>
+                <currency>EUR</currency>
+                <can_authorize>0</can_authorize>
+                <can_capture>0</can_capture>
+                <can_void>0</can_void>
+                <can_refund>0</can_refund>
+                <can_cancel>1</can_cancel>
+                <can_use_checkout>1</can_use_checkout>
+                <is_gateway>1</is_gateway>
+                <sort_order>2</sort_order>
+            </nocks_ideal>
+            <nocks_sepa>
+                <active>0</active>
+                <model>Magento\NocksPaymentGateway\Model\Methods\Sepa</model>
+                <title>SEPA</title>
+                <order_status>pending_payment</order_status>
+                <currency>EUR</currency>
+                <can_authorize>0</can_authorize>
+                <can_capture>0</can_capture>
+                <can_void>0</can_void>
+                <can_refund>0</can_refund>
+                <can_cancel>1</can_cancel>
+                <can_use_checkout>1</can_use_checkout>
+                <is_gateway>1</is_gateway>
+                <sort_order>3</sort_order>
+            </nocks_sepa>
+            <nocks_balance>
+                <active>0</active>
+                <model>Magento\NocksPaymentGateway\Model\Methods\Balance</model>
+                <title>Nocks Balance</title>
+                <order_status>pending_payment</order_status>
+                <currency>EUR</currency>
+                <can_authorize>0</can_authorize>
+                <can_capture>0</can_capture>
+                <can_void>0</can_void>
+                <can_refund>0</can_refund>
+                <can_cancel>1</can_cancel>
+                <can_use_checkout>1</can_use_checkout>
+                <is_gateway>1</is_gateway>
+                <sort_order>4</sort_order>
+            </nocks_balance>
         </payment>
     </default>
 </config>

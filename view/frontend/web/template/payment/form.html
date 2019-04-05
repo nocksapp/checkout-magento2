@@ -16,6 +16,23 @@
     </div>
 
     <div class="payment-method-content">
+
+        <div class="field-select-billing" data-bind="visible: (getCode() === 'nocks_ideal')">
+            <strong><span data-bind="i18n: 'Select your bank'"></span></strong>
+            <select data-bind="options: getIssuers(), optionsText: 'label', optionsValue: 'id', value: selectedIssuer"></select>
+        </div>
+
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
         <div class="actions-toolbar">
             <div class="primary">
                 <button class="action primary checkout"

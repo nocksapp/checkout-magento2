@@ -71,8 +71,13 @@ class Index extends Action {
 		// we need to fetch the transaction from Nocks to check the status.
 		// We don't change the order state here, this is always done in the Callback.
 		$response = $this->gateway->completePurchase($order->getNocksTransactionId());
-		if ($response->isSuccessful()) {
+		if ($response->isSuccessful() || $response->isOpen()) {
 			try {
+				if ($response->isOpen()) {
+					$msg = 'We have not received a definite payment status. Depending on the payment method, it may take a while until we receive the payment';
+					$this->messageManager->addNoticeMessage(__($msg));
+				}
+
 				// Redirect to success
 				$this->checkoutSession->start();
 				$this->_redirect('checkout/onepage/success?utm_nooverride=1');

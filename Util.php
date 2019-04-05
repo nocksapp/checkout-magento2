@@ -3,6 +3,9 @@
 namespace Magento\NocksPaymentGateway;
 
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Omnipay\Omnipay;
+
 class Util {
 
 	/**
@@ -27,5 +30,21 @@ class Util {
 		}
 
 		return $options;
+	}
+
+	/**
+	 * @param ScopeConfigInterface $scopeConfig
+	 *
+	 * @return \Omnipay\Common\GatewayInterface
+	 */
+	public static function makeOmnipayGateway(ScopeConfigInterface $scopeConfig) {
+		$accessToken = $scopeConfig->getValue('payment/nocks_gateway/access_token');
+		$testmode = $scopeConfig->getValue('payment/nocks_gateway/testmode');
+
+		$gateway = Omnipay::create('Nocks');
+		$gateway->setAccessToken($accessToken);
+		$gateway->setTestMode($testmode === '1' ? true : false);
+
+		return $gateway;
 	}
 }
