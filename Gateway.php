@@ -35,7 +35,11 @@ class Gateway {
 			'currency' => $order->getOrderCurrencyCode(),
 			'returnUrl' => $this->urlBuilder->getRouteUrl('nocks/redirect', ['order_id' => $order->getId()]),
 			'notifyUrl' => $this->urlBuilder->getRouteUrl('nocks/callback'),
-			'metadata' => ['order_id' => $order->getId()],
+			'metadata' => [
+				'order_id' => $order->getId(),
+				'nocks_plugin' => 'magento2:1.2.0',
+			],
+			'description' => $order->getRealOrderId() . ' - ' . $order->getStore()->getFrontendName(),
 		], $data);
 
 		$response = $this->gateway->purchase($options)->send();
