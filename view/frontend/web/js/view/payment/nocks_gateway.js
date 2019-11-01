@@ -35,6 +35,27 @@ define(
                 component: 'Magento_NocksPaymentGateway/js/view/payment/method-renderer/nocks_gateway'
             }
         );
+
+        rendererList.push(
+            {
+                type: 'nocks_bitcoin',
+                component: 'Magento_NocksPaymentGateway/js/view/payment/method-renderer/nocks_gateway'
+            }
+        );
+
+        rendererList.push(
+            {
+                type: 'nocks_litecoin',
+                component: 'Magento_NocksPaymentGateway/js/view/payment/method-renderer/nocks_gateway'
+            }
+        );
+
+        rendererList.push(
+            {
+                type: 'nocks_ethereum',
+                component: 'Magento_NocksPaymentGateway/js/view/payment/method-renderer/nocks_gateway'
+            }
+        );
         /** Add view logic here if needed */
         return Component.extend({});
     }

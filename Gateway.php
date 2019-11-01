@@ -37,7 +37,7 @@ class Gateway {
 			'notifyUrl' => $this->urlBuilder->getRouteUrl('nocks/callback'),
 			'metadata' => [
 				'order_id' => $order->getId(),
-				'nocks_plugin' => 'magento2:1.2.0',
+				'nocks_plugin' => 'magento2:1.3.0',
 			],
 			'description' => $order->getRealOrderId() . ' - ' . $order->getStore()->getFrontendName(),
 		], $data);
