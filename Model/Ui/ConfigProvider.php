@@ -34,7 +34,7 @@ final class ConfigProvider implements ConfigProviderInterface
 	}
 
 	private function getIssuers() {
-		$cacheKey = '4nocks_issuers_' . ($this->gateway->getTestMode() ? 'test' : 'live');
+		$cacheKey = 'nocks_issuers_' . ($this->gateway->getTestMode() ? 'test' : 'live');
 		$cachedIssuers = $this->cache->load($cacheKey);
 
 		if ($cachedIssuers) {
@@ -61,7 +61,7 @@ final class ConfigProvider implements ConfigProviderInterface
 	{
 		return [
 			'payment' => [
-				'issuers' => $this->getIssuers(),
+				'issuers' => array_merge([['id' => '', 'label' => __('Select your bank')]], $this->getIssuers()),
 			],
 		];
 	}

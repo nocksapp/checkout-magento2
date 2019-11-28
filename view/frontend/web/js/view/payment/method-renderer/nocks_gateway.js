@@ -23,6 +23,10 @@ define(
             getIssuers: function () {
                 return window.checkoutConfig.payment.issuers;
             },
+
+            isDisabled: function () {
+                return this.getCode() === 'nocks_ideal' && this.selectedIssuer() === '';
+            },
             
             getData: function() {
                 if (this.item.method === 'nocks_ideal') {

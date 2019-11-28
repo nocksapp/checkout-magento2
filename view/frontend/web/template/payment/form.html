@@ -18,7 +18,6 @@
     <div class="payment-method-content">
 
         <div class="field-select-billing" data-bind="visible: (getCode() === 'nocks_ideal')">
-            <strong><span data-bind="i18n: 'Select your bank'"></span></strong>
             <select data-bind="options: getIssuers(), optionsText: 'label', optionsValue: 'id', value: selectedIssuer"></select>
         </div>
 
@@ -39,7 +38,7 @@
                         type="submit"
                         data-bind="
                         click: placeOrder,
-                        attr: {title: $t('Place Order')}
+                        attr: {title: $t('Place Order'), disabled: isDisabled()}
                         ">
                     <span data-bind="i18n: 'Place Order'"></span>
                 </button>
